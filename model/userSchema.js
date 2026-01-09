@@ -19,8 +19,7 @@ const userSchema = new Schema({
         required: true
     },
     otp: {
-        type: String,
-        required: true
+        type: String
     },
 })
 

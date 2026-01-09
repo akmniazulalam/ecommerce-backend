@@ -3,6 +3,7 @@ const express = require("express");
 const dbConnection = require("./database/dbconnection");
 const app = express();
 const port = 3000;
+app.use(express.json())
 const route = require('./route')
 
 app.get("/", (req, res) => {
