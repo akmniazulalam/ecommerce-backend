@@ -31,6 +31,9 @@ function signupController(req, res) {
     password,
   });
   user.save();
+  res.json({
+    data: user,
+  })
 }
 
 module.exports = signupController;

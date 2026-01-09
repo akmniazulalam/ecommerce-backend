@@ -22,9 +22,6 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    isVerified: {
-        default: false
-    },
 })
 
 module.exports = mongoose.model("userList", userSchema)
