@@ -20,7 +20,7 @@ async function signupController(req, res) {
         message: "Error: Password is required"
     })
   }
-  if(!emailValidation) {
+  if(!emailValidation(email)) {
     return res.json({
         message: "Error: Email format is not correct"
     })
