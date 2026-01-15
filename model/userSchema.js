@@ -20,7 +20,7 @@ const userSchema = new Schema({
     },
     otp: {
         type: String
-    },
+    }
 })
 
 module.exports = mongoose.model("userList", userSchema)

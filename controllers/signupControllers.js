@@ -1,8 +1,9 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const userSchema = require("../model/userSchema");
 const emailValidation = require("../helpers/emailValidation");
 
-function signupController(req, res) {
+async function signupController(req, res) {
   const { firstName, lastName, email, password } = req.body;
   if(!firstName || !lastName) {
     return res.json({
@@ -24,16 +25,36 @@ function signupController(req, res) {
         message: "Error: Email format is not correct"
     })
   }
-  const user = new userSchema({
+
+  const existingEmail = await userSchema.find({email})
+
+  console.log(existingEmail.length)
+
+  if(existingEmail.length > 0) {
+    return res.json({
+      message: "This email already used"
+    })
+  }
+  // else{
+  //   res.json({
+  //     message: "Data Send"
+  //   })
+  // }
+
+  bcrypt.hash(password, 10, (err, hash) => {
+    const user = new userSchema({
     firstName,
     lastName,
     email,
-    password,
+    password: hash,
   });
   user.save();
-  res.json({
-    data: user,
   })
+  res.json({
+    message: "Data send",
+  })
+
+  
 }
 
 module.exports = signupController;
