@@ -1,10 +1,12 @@
-const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userSchema = require("../model/userSchema");
 const emailValidation = require("../helpers/emailValidation");
+const emailVerification = require("../helpers/emailVerification");
 
 async function signupController(req, res) {
   const { firstName, lastName, email, password } = req.body;
+  const token = jwt.sign({id: email}, "niaz")
   if(!firstName || !lastName) {
     return res.json({
         message: "Error: First name and last name are required"
@@ -20,7 +22,7 @@ async function signupController(req, res) {
         message: "Error: Password is required"
     })
   }
-  if(!emailValidation(email)) {
+  if(!emailValidation) {
     return res.json({
         message: "Error: Email format is not correct"
     })
@@ -35,11 +37,6 @@ async function signupController(req, res) {
       message: "This email already used"
     })
   }
-  // else{
-  //   res.json({
-  //     message: "Data Send"
-  //   })
-  // }
 
   bcrypt.hash(password, 10, (err, hash) => {
     const user = new userSchema({
@@ -47,8 +44,10 @@ async function signupController(req, res) {
     lastName,
     email,
     password: hash,
+    token: token
   });
   user.save();
+  emailVerification(email)
   })
   res.json({
     message: "Data send",
