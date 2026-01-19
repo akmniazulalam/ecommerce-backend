@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userSchema = require("../model/userSchema");
 const emailValidation = require("../helpers/emailValidation");
+const passVal = require("../helpers/passVal");
 const emailVerification = require("../helpers/emailVerification");
 
 async function signupController(req, res) {
@@ -22,9 +23,15 @@ async function signupController(req, res) {
         message: "Error: Password is required"
     })
   }
-  if(!emailValidation) {
+  if(!emailValidation(email)) {
     return res.json({
-        message: "Error: Email format is not correct"
+        message: "Error: Email format is not correct."
+    })
+  }
+
+  if(!passVal(password)) {
+    return res.json({
+      message: "Error: Password format is not correct."
     })
   }
 
@@ -47,7 +54,7 @@ async function signupController(req, res) {
     token: token
   });
   user.save();
-  emailVerification(email)
+  // emailVerification(email)
   })
   res.json({
     message: "Data send",

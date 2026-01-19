@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 
   const info = await transporter.sendMail({
-    from: '"Nodemailer" <niazulalam097@gmail.com>',
+    from: '"Signup" <niazulalam097@gmail.com>',
     to: email,
     subject: "Signup Successful",
     text: "Your account has been created successfully.", // Plain-text version of the message
