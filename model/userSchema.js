@@ -23,6 +23,13 @@ const userSchema = new Schema({
     },
     otp: {
         type: String
+    },
+    expireOtp: {
+        type: Date
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
 })
 

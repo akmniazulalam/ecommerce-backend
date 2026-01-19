@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 
-async function emailVerification(email){
+async function emailVerification(email, otp){
 const transporter = nodemailer.createTransport({
   service: "gmail",
   port: 587,
@@ -13,11 +13,11 @@ const transporter = nodemailer.createTransport({
 
 
   const info = await transporter.sendMail({
-    from: '"Signup" <niazulalam097@gmail.com>',
+    from: '"Otp" <niazulalam097@gmail.com>',
     to: email,
-    subject: "Signup Successful",
-    text: "Your account has been created successfully.", // Plain-text version of the message
-    html: "<b>Your account has been created successfully.</b>", // HTML version of the message
+    subject: "Otp",
+    text: "Otp Verification", // Plain-text version of the message
+    html: `<h1>Your Otp is: ${otp}</h1>`, // HTML version of the message
   });
 }
 

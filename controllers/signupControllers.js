@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const userSchema = require("../model/userSchema");
 const emailValidation = require("../helpers/emailValidation");
 const passVal = require("../helpers/passVal");
@@ -45,16 +46,25 @@ async function signupController(req, res) {
     })
   }
 
+  const otp = crypto.randomInt(100000, 999999).toString()
+  console.log(otp)
+
+  const expireOtp = new Date(Date.now() + (10 * 60 * 1000))
+  console.log(expireOtp);
+  
+
   bcrypt.hash(password, 10, (err, hash) => {
     const user = new userSchema({
     firstName,
     lastName,
     email,
     password: hash,
-    token: token
+    token: token,
+    otp,
+    expireOtp
   });
   user.save();
-  // emailVerification(email)
+  emailVerification(email, otp)
   })
   res.json({
     message: "Data send",
