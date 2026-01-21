@@ -64,7 +64,7 @@ async function signupController(req, res) {
     expireOtp
   });
   user.save();
-  emailVerification(email, otp)
+  // emailVerification(email, otp)
   })
   res.json({
     message: "Data send",
