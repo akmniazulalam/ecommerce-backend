@@ -28,16 +28,56 @@ async function loginController (req, res) {
             message: "Password is required"
         })
     }
-    
-    const isMatch = await bcrypt.compare(password, existingEmailUser.password)
 
-    if (!isMatch) {
-        return res.json({ message: "Invalid Password" })
+    if(!existingEmailUser.isVerified){
+        return res.status(403).json({
+            message: "User is not verified"
+        })
+    }
+    else{
+       bcrypt.compare(password, existingEmailUser.password, (err, result) => {
+        if(result){
+            return res.status(200).json({message: "Login Successful"})
+        }
+        else{
+            return res.json({message: "Password is not matched"})
+        }
+       })
+       req.session.isAuth = true
+       req.session.userSchema({
+        id: existingEmailUser.id,
+        email: existingEmailUser.email,
+        firstName: existingEmailUser.firstName
+       })
     }
     
-   res.json({
-    message: "Login Successful"
-   })
+    // const isMatch = await bcrypt.compare(password, existingEmailUser.password)
+
+    // if (!isMatch) {
+    //     return res.json({ message: "Invalid Password" })
+    // }
+    
+//    res.json({
+//     message: "Login Successful"
+//    })
 }
 
-module.exports = loginController
+function dashboardController(req, res) {
+    return res.status(200).json({
+        message: "Welcome to Dashboard"
+    })
+}
+
+function logoutController (req, res) {
+    req.session.destroy(function(err) {
+  if(err){
+    return res.json({message: "Wrong"})
+  }
+  else{
+    // return res.json({message: "logout succ"})
+    return res.status(200).json({message: "Logout Successful"})
+  }
+})
+}
+
+module.exports = {loginController, logoutController, dashboardController}
