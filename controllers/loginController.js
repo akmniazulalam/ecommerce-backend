@@ -34,31 +34,29 @@ async function loginController(req, res) {
     });
   } else {
     bcrypt.compare(password, existingEmailUser.password, (err, result) => {
-      if (result) {
-        return res.status(200).json({ message: "Login Successful" });
-      } else {
+      if (!result) {
         return res.json({ message: "Password is not matched" });
       }
+      req.session.isAuth = true;
+      req.session.userSchema = {
+        id: existingEmailUser.id,
+        email: existingEmailUser.email,
+        firstName: existingEmailUser.firstName,
+      };
+      return res.status(200).json({ message: "Login Successful" });
     });
-    req.session.isAuth = true;
-    req.session.userSchema = {
-      id: existingEmailUser.id,
-      email: existingEmailUser.email,
-      firstName: existingEmailUser.firstName,
-    };
+
+    // const isMatch = await bcrypt.compare(password, existingEmailUser.password)
+
+    // if (!isMatch) {
+    //     return res.json({ message: "Invalid Password" })
+    // }
+
+    //    res.json({
+    //     message: "Login Successful"
+    //    })
   }
-
-  // const isMatch = await bcrypt.compare(password, existingEmailUser.password)
-
-  // if (!isMatch) {
-  //     return res.json({ message: "Invalid Password" })
-  // }
-
-  //    res.json({
-  //     message: "Login Successful"
-  //    })
 }
-
 function dashboardController(req, res) {
   return res.status(200).json({
     message: "Welcome to Dashboard",
@@ -70,7 +68,6 @@ function logoutController(req, res) {
     if (err) {
       return res.json({ message: "Wrong" });
     } else {
-      // return res.json({message: "logout succ"})
       return res.status(200).json({ message: "Logout Successful" });
     }
   });
