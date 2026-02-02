@@ -10,7 +10,7 @@ const route = require('./route')
 app.use(session({
   secret: 'ecommerceApi',
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { secure: false }
 }))
 
