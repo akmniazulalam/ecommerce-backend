@@ -15,4 +15,9 @@ function categoryController(req, res) {
   }
 }
 
-module.exports = categoryController;
+async function getAllCategory (req, res) {
+    const getCategoryList = await categorySchema.find({})
+    res.json({message: "Category Paichi", data: getCategoryList})
+}
+
+module.exports = {categoryController, getAllCategory};
