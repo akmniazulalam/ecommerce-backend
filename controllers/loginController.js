@@ -68,6 +68,7 @@ function logoutController(req, res) {
     if (err) {
       return res.json({ message: "Wrong" });
     } else {
+      res.clearCookie("connect.sid");
       return res.status(200).json({ message: "Logout Successful" });
     }
   });
