@@ -46,4 +46,13 @@ async function deleteCategoryController (req, res) {
    })
 }
 
-module.exports = {categoryController, getAllCategory, updateCategoryController, deleteCategoryController};
+
+async function deleteAllCategoryController (req, res) {
+   const deleteAllCategory = await categorySchema.deleteMany({})
+   res.status(200).json({
+    message: "Success",
+    data: deleteAllCategory
+   })
+}
+
+module.exports = {categoryController, getAllCategory, updateCategoryController, deleteCategoryController, deleteAllCategoryController};

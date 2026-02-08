@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {categoryController, getAllCategory, updateCategoryController, deleteCategoryController} = require('../../controllers/categoryController')
+const {categoryController, getAllCategory, updateCategoryController, deleteCategoryController, deleteAllCategoryController} = require('../../controllers/categoryController')
 const {subCategoryController} = require('../../controllers/subCategoryController')
 
 
@@ -9,5 +9,6 @@ router.get("/getallcategory", getAllCategory)
 router.post("/createsubcategory", subCategoryController)
 router.patch("/updatecategory/:id", updateCategoryController)
 router.delete("/deletecategory/:id", deleteCategoryController)
+router.delete("/deleteallcategory", deleteAllCategoryController)
 
 module.exports = router
