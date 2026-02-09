@@ -4,55 +4,59 @@ function categoryController(req, res) {
   const { name, description } = req.body;
   try {
     const createCategory = new categorySchema({
-    name,
-    description,
-  });
-  createCategory.save();
+      name,
+      description,
+    });
+    createCategory.save();
 
-  res.status(200).json({ message: "Category Added Successfully" });
+    res.status(200).json({ message: "Category Added Successfully" });
   } catch (error) {
-    return res.json({message: error})
+    return res.json({ message: error });
   }
 }
 
-async function getAllCategory (req, res) {
-    const getCategoryList = await categorySchema.find({})
-    res.json({message: "Category Paichi", data: getCategoryList})
+async function getAllCategory(req, res) {
+  const getCategoryList = await categorySchema.find({}).populate("subcategorylist");
+  res.json({ message: "Category Paichi", data: getCategoryList });
 }
 
-async function updateCategoryController (req, res) {
-  const {id} = req.params
-  const {name, description} = req.body
-  
-  const updateCategory = await categorySchema.findById(id)
+async function updateCategoryController(req, res) {
+  const { id } = req.params;
+  const { name, description } = req.body;
 
-  updateCategory.name = name
-  updateCategory.description = description
+  const updateCategory = await categorySchema.findById(id);
 
-  await updateCategory.save()
+  updateCategory.name = name;
+  updateCategory.description = description;
+
+  await updateCategory.save();
   res.status(200).json({
     message: "Success",
-    data: updateCategory
-  })
+    data: updateCategory,
+  });
 }
 
-
-async function deleteCategoryController (req, res) {
-   const {id} = req.params
-   const deleteCategory = await categorySchema.findByIdAndDelete(id)
-   res.status(200).json({
+async function deleteCategoryController(req, res) {
+  const { id } = req.params;
+  const deleteCategory = await categorySchema.findByIdAndDelete(id);
+  res.status(200).json({
     message: "Success",
-    data: deleteCategory
-   })
+    data: deleteCategory,
+  });
 }
 
-
-async function deleteAllCategoryController (req, res) {
-   const deleteAllCategory = await categorySchema.deleteMany({})
-   res.status(200).json({
+async function deleteAllCategoryController(req, res) {
+  const deleteAllCategory = await categorySchema.deleteMany({});
+  res.status(200).json({
     message: "Success",
-    data: deleteAllCategory
-   })
+    data: deleteAllCategory,
+  });
 }
 
-module.exports = {categoryController, getAllCategory, updateCategoryController, deleteCategoryController, deleteAllCategoryController};
+module.exports = {
+  categoryController,
+  getAllCategory,
+  updateCategoryController,
+  deleteCategoryController,
+  deleteAllCategoryController,
+};

@@ -1,24 +1,37 @@
 const subCategorySchema = require("../model/subCategorySchema");
+const categorySchema = require("../model/categorySchema");
 
-function subCategoryController(req, res) {
-  const { name, description } = req.body;
+async function subCategoryController(req, res) {
+  const { name, description, categoryId } = req.body;
   try {
-    const createSubCategory = new subCategorySchema({
-    name,
-    description,
-    categoryId
-  });
-  createSubCategory.save();
+    const existingSubCategory = await subCategorySchema.findOne({name})
 
-  res.status(200).json({ message: "Subcategory Added Successfully" });
+    if(existingSubCategory){
+      return res.json({message: "Already Exist"})
+    }
+    const createSubCategory = await subCategorySchema.create({
+      name,
+      description,
+      categoryId,
+    });
+    createSubCategory.save();
+
+    await categorySchema.findOneAndUpdate({_id: categoryId}, { $push: {subcategorylist: createSubCategory._id}}, {new: true})
+
+    res.status(200).json({ message: "Subcategory Added Successfully" });
   } catch (error) {
-    return res.json({message: error})
+    return res.json({ message: "error" });
   }
 }
 
-async function getAllCategory (req, res) {
-    const getCategoryList = await subCategorySchema.find({})
-    res.json({message: "Category Paichi", data: getCategoryList})
+async function getAllSubCategory(req, res) {
+  const getCategoryList = await subCategorySchema.find({});
+  res.json({ message: "Category Paichi", data: getCategoryList });
 }
 
-module.exports = {subCategoryController, getAllCategory};
+async function deleteAllSubCategory (req, res) {
+  const AllSubCategory = await subCategorySchema.deleteMany({})
+  res.json({message: "Success", data: AllSubCategory})
+}
+
+module.exports = { subCategoryController, getAllSubCategory, deleteAllSubCategory };
