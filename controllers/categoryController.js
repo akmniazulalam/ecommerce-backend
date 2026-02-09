@@ -16,7 +16,7 @@ function categoryController(req, res) {
 }
 
 async function getAllCategory(req, res) {
-  const getCategoryList = await categorySchema.find({}).populate("subcategorylist");
+  const getCategoryList = await categorySchema.find({}).populate("subcategorylist"); //ei populate diye shudhu matro response ei subcategory er data dekha jabe. db te subcategory er id chara ar kichu dekha jabena
   res.json({ message: "Category Paichi", data: getCategoryList });
 }
 

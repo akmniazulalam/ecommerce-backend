@@ -9,14 +9,14 @@ async function subCategoryController(req, res) {
     if(existingSubCategory){
       return res.json({message: "Already Exist"})
     }
-    const createSubCategory = await subCategorySchema.create({
+    const createSubCategory = new subCategorySchema({
       name,
       description,
       categoryId,
     });
-    createSubCategory.save();
+    await createSubCategory.save();
 
-    await categorySchema.findOneAndUpdate({_id: categoryId}, { $push: {subcategorylist: createSubCategory._id}}, {new: true})
+    const updatedCategory = await categorySchema.findOneAndUpdate({_id: categoryId}, { $push: {subcategorylist: createSubCategory._id}}, {new: true})
 
     res.status(200).json({ message: "Subcategory Added Successfully" });
   } catch (error) {
