@@ -1,12 +1,13 @@
 const productSchema = require("../model/productSchema");
 
 async function productController(req, res) {
-  const { name, description, category, price, size, color, ram, storage } =
+  const { name, description, category, price, size, color, ram, storage, image } =
     req.body;
   const createProduct = new productSchema({
     name,
     description,
     category,
+    image,
     price,
     size,
     color,
