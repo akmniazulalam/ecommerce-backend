@@ -7,7 +7,7 @@ async function productController(req, res) {
     name,
     description,
     category,
-    image: req.file.filename,
+    image: `http://localhost:3000/uploads/${req.file.filename}`,
     price,
     size,
     color,

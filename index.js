@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require("express");
+const path = require('path');
 const session = require("express-session")
 const dbConnection = require("./database/dbconnection");
 const app = express();
@@ -13,6 +14,8 @@ app.use(session({
   saveUninitialized: false,
   cookie: { secure: false }
 }))
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 app.get("/", (req, res) => {
   res.send("Hello World");
