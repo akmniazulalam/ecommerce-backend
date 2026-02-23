@@ -1,13 +1,22 @@
+const uploadImage = require("../middlewares/cloudinary");
 const productSchema = require("../model/productSchema");
 
 async function productController(req, res) {
-  const { name, description, category, price, size, color, ram, storage, image } =
+  const { name, description, category, price, size, color, ram, storage } =
     req.body;
+
+    const imagePath = req.file.buffer
+
+    console.log(imagePath)
+
+    const imageUrl = await uploadImage(imagePath)
+
   const createProduct = new productSchema({
     name,
     description,
     category,
-    image: `http://localhost:3000/uploads/${req.file.filename}`,
+    image: imageUrl.secure_url,
+    // image: `http://localhost:3000/uploads/${req.file.filename}`,
     price,
     size,
     color,
