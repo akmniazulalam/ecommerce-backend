@@ -5,7 +5,8 @@ async function productController(req, res) {
   const { name, description, category, price, size, color, ram, storage } =
     req.body;
 
-    const imagePath = req.file.buffer
+    // const imagePath = req.file.buffer
+    const imagePath = req.file.path
 
     console.log(imagePath)
 
